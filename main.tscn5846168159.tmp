@@ -1,8 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://d3fpld333mtga"]
+[gd_scene load_steps=3 format=3 uid="uid://d3fpld333mtga"]
 
 [ext_resource type="Script" uid="uid://c0iguihwp4g51" path="res://main.gd" id="1_0xm2m"]
 [ext_resource type="PackedScene" uid="uid://b467ppnthr5y0" path="res://board.tscn" id="1_ig7tw"]
-[ext_resource type="PackedScene" uid="uid://3jrmqporf2hj" path="res://bracket_options.tscn" id="2_h2yge"]
 
 [node name="Main" type="Control"]
 layout_mode = 3
@@ -44,40 +43,18 @@ text = "Brackets"
 
 [node name="BracketList" type="ItemList" parent="VBoxContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
-clip_contents = false
 custom_minimum_size = Vector2(128, 256)
 layout_mode = 2
 
-[node name="BracketOptions" parent="VBoxContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/BracketList" node_paths=PackedStringArray("bracket_list") instance=ExtResource("2_h2yge")]
-visible = false
-layout_mode = 0
-offset_left = -10.0
-offset_top = -37.0
-offset_right = 118.0
-offset_bottom = -6.0
-bracket_list = NodePath("..")
-
-[node name="HSeparator" type="HSeparator" parent="VBoxContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="DictionaryButton" type="Button" parent="VBoxContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
-layout_mode = 2
-text = "Print Dictionary"
-
 [node name="SubViewportContainer" type="SubViewportContainer" parent="VBoxContainer/HBoxContainer"]
-z_index = -1
 layout_mode = 2
 size_flags_horizontal = 3
 stretch = true
 
 [node name="SubViewport" type="SubViewport" parent="VBoxContainer/HBoxContainer/SubViewportContainer"]
 handle_input_locally = false
-size = Vector2i(998, 648)
+size = Vector2i(1000, 648)
 render_target_update_mode = 4
 
 [node name="Board" parent="VBoxContainer/HBoxContainer/SubViewportContainer/SubViewport" instance=ExtResource("1_ig7tw")]
 unique_name_in_owner = true
-
-[connection signal="item_clicked" from="VBoxContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/BracketList" to="VBoxContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/BracketList/BracketOptions" method="_on_bracket_list_item_clicked"]
-[connection signal="bracket_name_changed" from="VBoxContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/BracketList/BracketOptions" to="." method="_on_bracket_options_bracket_name_changed"]
-[connection signal="pressed" from="VBoxContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/DictionaryButton" to="." method="_on_dictionary_button_pressed"]

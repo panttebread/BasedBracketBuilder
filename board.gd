@@ -14,6 +14,7 @@ func _on_child_entered(child: Node) -> void:
 		points.append(child)
 		child.connecting.connect(_on_point_connecting)
 		child.disconnecting.connect(_on_point_disconnecting)
+		child.bracket_added.connect(_on_bracket_added)
 
 func _on_point_connecting(point: PointNode) -> void:
 	# find PointNode at mouse position
@@ -23,17 +24,7 @@ func _on_point_connecting(point: PointNode) -> void:
 			if point.connection_to == connection_point:
 				return
 			# don't continue if point wasn't able to be connected
-			if point.add_connection(connection_point) != OK:
-				return
-			print("connecting ",point.name," to ",connection_point.name)
-			# add one to the other's bracket
-			if is_instance_valid(point.bracket):
-				connection_point.bracket = point.bracket
-			elif is_instance_valid(connection_point.bracket):
-				point.bracket = connection_point.bracket
-			# or make a new bracket if neither have one
-			else:
-				_on_bracket_added(Bracket.new([point, connection_point]))
+			point.add_connection(connection_point)
 
 func _on_point_disconnecting(point: PointNode) -> void:
 	# find PointNode at mouse position
@@ -58,3 +49,11 @@ func _on_bracket_empty(bracket: Bracket) -> void:
 	brackets.remove_at(brackets.find(bracket))
 	bracket_removed.emit(bracket.name)
 	bracket.empty.disconnect(_on_bracket_empty)
+
+func _find_bracket_by_name(bracket: Bracket, bracket_name: String) -> bool:
+	return bracket.name == bracket_name
+
+func rename_bracket(bracket_name: String, new_name: String) -> void:
+	var idx = brackets.find_custom(_find_bracket_by_name.bind(bracket_name))
+	if idx != -1:
+		brackets[idx].name = new_name
