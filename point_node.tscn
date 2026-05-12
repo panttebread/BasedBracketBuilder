@@ -45,6 +45,16 @@ size_flags_horizontal = 3
 text = "⮟"
 flat = true
 
+[node name="ConnectExternalButton" type="Button" parent="."]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(31, 31)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+text = "￭"
+flat = true
+
 [connection signal="button_down" from="VBoxContainer/ConnectFromButton" to="." method="_on_connect_from_button_down"]
 [connection signal="button_down" from="VBoxContainer/HBoxContainer/MoveButton" to="." method="_on_move_button_button_down"]
 [connection signal="button_down" from="VBoxContainer/HBoxContainer2/ConnectToButton" to="." method="_on_connect_to_button_down"]
+[connection signal="button_down" from="ConnectExternalButton" to="." method="_on_connect_external_button_down"]

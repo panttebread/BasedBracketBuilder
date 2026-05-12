@@ -1,28 +1,8 @@
-[gd_scene load_steps=10 format=3 uid="uid://d3fpld333mtga"]
+[gd_scene load_steps=4 format=3 uid="uid://d3fpld333mtga"]
 
 [ext_resource type="Script" uid="uid://c0iguihwp4g51" path="res://main.gd" id="1_0xm2m"]
 [ext_resource type="PackedScene" uid="uid://b467ppnthr5y0" path="res://board.tscn" id="1_ig7tw"]
 [ext_resource type="PackedScene" uid="uid://3jrmqporf2hj" path="res://bracket_options.tscn" id="2_h2yge"]
-[ext_resource type="Script" uid="uid://bbkptydod6n5u" path="res://message_popup.gd" id="4_1bvp3"]
-[ext_resource type="Script" uid="uid://d3muym7ud6ux" path="res://load_dialog.gd" id="5_lquwl"]
-
-[sub_resource type="InputEventKey" id="InputEventKey_h2yge"]
-device = -1
-ctrl_pressed = true
-keycode = 83
-unicode = 115
-
-[sub_resource type="Shortcut" id="Shortcut_1bvp3"]
-events = [SubResource("InputEventKey_h2yge")]
-
-[sub_resource type="InputEventKey" id="InputEventKey_lquwl"]
-device = -1
-ctrl_pressed = true
-keycode = 79
-unicode = 111
-
-[sub_resource type="Shortcut" id="Shortcut_7mycd"]
-events = [SubResource("InputEventKey_lquwl")]
 
 [node name="Main" type="Control"]
 layout_mode = 3
@@ -62,8 +42,7 @@ layout_mode = 2
 layout_mode = 2
 text = "Board"
 
-[node name="NameEdit" type="LineEdit" parent="VBoxContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
-unique_name_in_owner = true
+[node name="LineEdit" type="LineEdit" parent="VBoxContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 placeholder_text = "Name"
 
@@ -92,20 +71,17 @@ bracket_list = NodePath("..")
 [node name="HSeparator2" type="HSeparator" parent="VBoxContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="SaveButton" type="Button" parent="VBoxContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
-unique_name_in_owner = true
+[node name="DictionaryButton" type="Button" parent="VBoxContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
-shortcut = SubResource("Shortcut_1bvp3")
+text = "Print Dictionary"
+
+[node name="SaveButton" type="Button" parent="VBoxContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
 text = "Save"
 
 [node name="LoadButton" type="Button" parent="VBoxContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
-shortcut = SubResource("Shortcut_7mycd")
 text = "Load"
-
-[node name="ExportButton" type="Button" parent="VBoxContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
-layout_mode = 2
-text = "Export JSON"
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="VBoxContainer/HBoxContainer"]
 z_index = -1
@@ -115,61 +91,14 @@ stretch = true
 
 [node name="SubViewport" type="SubViewport" parent="VBoxContainer/HBoxContainer/SubViewportContainer"]
 handle_input_locally = false
-size = Vector2i(1000, 648)
+size = Vector2i(998, 648)
 render_target_update_mode = 4
 
 [node name="Board" parent="VBoxContainer/HBoxContainer/SubViewportContainer/SubViewport" instance=ExtResource("1_ig7tw")]
 unique_name_in_owner = true
 
-[node name="MessagePopup" type="AcceptDialog" parent="."]
-unique_name_in_owner = true
-oversampling_override = 1.0
-initial_position = 1
-size = Vector2i(316, 140)
-script = ExtResource("4_1bvp3")
-
-[node name="MessageLabel" type="Label" parent="MessagePopup"]
-custom_minimum_size = Vector2(300, 75)
-offset_left = 8.0
-offset_top = 8.0
-offset_right = 308.0
-offset_bottom = 91.0
-size_flags_vertical = 3
-text = "Message goes here "
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 3
-
-[node name="LoadDialog" type="ConfirmationDialog" parent="."]
-unique_name_in_owner = true
-oversampling_override = 1.0
-title = "Load Board"
-initial_position = 1
-size = Vector2i(200, 348)
-ok_button_text = "Load"
-script = ExtResource("5_lquwl")
-
-[node name="VBoxContainer" type="VBoxContainer" parent="LoadDialog"]
-offset_left = 8.0
-offset_top = 8.0
-offset_right = 192.0
-offset_bottom = 299.0
-
-[node name="BoardFilter" type="LineEdit" parent="LoadDialog/VBoxContainer"]
-layout_mode = 2
-placeholder_text = "Filter..."
-
-[node name="BoardList" type="ItemList" parent="LoadDialog/VBoxContainer"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 256)
-layout_mode = 2
-
 [connection signal="item_clicked" from="VBoxContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/BracketList" to="VBoxContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/BracketList/BracketOptions" method="_on_bracket_list_item_clicked"]
 [connection signal="bracket_name_changed" from="VBoxContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/BracketList/BracketOptions" to="." method="_on_bracket_options_bracket_name_changed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/DictionaryButton" to="." method="_on_dictionary_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/SaveButton" to="." method="_on_save_button_pressed"]
-[connection signal="pressed" from="VBoxContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/SaveButton" to="VBoxContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/SaveButton" method="_on_pressed"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/LoadButton" to="." method="_on_load_button_pressed"]
-[connection signal="pressed" from="VBoxContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/ExportButton" to="." method="_on_export_button_pressed"]
-[connection signal="about_to_popup" from="LoadDialog" to="LoadDialog" method="_on_about_to_popup"]
-[connection signal="confirmed" from="LoadDialog" to="." method="_on_load_dialog_confirmed"]
-[connection signal="text_changed" from="LoadDialog/VBoxContainer/BoardFilter" to="LoadDialog" method="_on_board_filter_text_changed"]

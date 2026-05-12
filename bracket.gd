@@ -5,7 +5,7 @@ static var count : int = 0
 signal name_changed(new_name: String)
 signal empty(bracket: Bracket)
 
-var name : String:
+@export var name : String:
 	set(value):
 		if name != value:
 			name_changed.emit(value)
@@ -15,14 +15,16 @@ var points : Array[PointNode]
 func _init(bracket_points: Array[PointNode] = []) -> void:
 	count += 1
 	name = str("bracket",count)
-	for point in bracket_points:
-		point.bracket = self
+	for i in bracket_points.size():
+		bracket_points[i].index = i
+		bracket_points[i].bracket = self
 
 func add_point(point: PointNode) -> Error:
 	if not is_instance_valid(point):
 		return ERR_INVALID_PARAMETER
 	if points.has(point):
 		return ERR_ALREADY_EXISTS
+	point.index = points.size()
 	points.append(point)
 	return OK
 
@@ -49,16 +51,20 @@ func get_dictionary() -> Dictionary:
 		bracket_dict[key + lowest_level] = bracket_dict[key]
 		bracket_dict.erase(key)
 	
-	print(bracket_dict)
 	return bracket_dict
 
 func _fill_dict_recursive(dict: Dictionary, point: PointNode, level: int) -> Dictionary:
 	if not dict.has(level):
 		dict[level] = []
+	
 	var point_dict:= { "index": point.index }
 	if is_instance_valid(point.connection_to):
 		point_dict[point.bracket.name] = point.connection_to.index
+	for ext_bracket in point.external_connections_to:
+		point_dict[ext_bracket.name] = point.external_connections_to[ext_bracket].index
+	
 	dict[level].append(point_dict)
+	
 	point.connections_from.sort_custom(_sort_by_position)
 	for connection in point.connections_from:
 		dict = _fill_dict_recursive(dict, connection, level-1)
