@@ -1,21 +1,27 @@
 class_name PointNode extends PanelContainer
 
 const SCENE_RES = "res://point_node.tscn"
+const GRID_SIZE = 16
+const EXTERNAL_COLOR = Color(0.1, 0.1, 0.1)
 
 static func new_instance() -> PointNode:
 	return load(SCENE_RES).instantiate()
 
 signal connecting(point: PointNode, external: bool)
 signal disconnecting(point: PointNode)
+signal index_changed(point: PointNode, prev_index: int)
+signal moving(point: PointNode, pos: Vector2)
 signal bracket_added(new_bracket: Bracket)
 
 @export var index : int:
-	set(value): index = value; _set_index.call_deferred(value)
+	get: return _index
+	set(value): %IndexBox.value = value; _index = value
+var _index : int
 
-func _set_index(value: int) -> void:
-	#if not is_instance_valid(index_box):
-		#await ready
-	%IndexBox.value = value
+func _on_index_box_value_changed(value: float) -> void:
+	var prev_index:= _index
+	_index = int(value)
+	index_changed.emit(self, prev_index);
 
 var bracket : Bracket:
 	set(value):
@@ -26,22 +32,32 @@ var bracket : Bracket:
 				bracket_added.emit(value)
 			value.add_point(self)
 			value.name_changed.connect(_on_bracket_name_changed)
+			_style_box = value._style_box
 			%BracketLabel.text = value.name
 		else:
 			%BracketLabel.text = ""
+			_set_default_style_box()
 		if is_instance_valid(bracket):
 			bracket.remove_point(self)
 			bracket.name_changed.disconnect(_on_bracket_name_changed)
-			_break_external_connections()
+			_break_external_connections_from()
 		bracket = value
 
 @onready var index_box : SpinBox = %IndexBox
 @onready var bracket_label : Label = %BracketLabel
+@onready var context_menu : PopupMenu = $ContextMenu
 
 var connection_to : PointNode
 var connections_from : Array[PointNode] = []
 var external_connections_to : Dictionary[Bracket, PointNode] = {}
 var external_connections_from : Array[PointNode] = []
+
+var _style_box : StyleBoxFlat:
+	get: return get_theme_stylebox(&"panel")
+	set(value): add_theme_stylebox_override(&"panel", value)
+
+func _set_default_style_box() -> void:
+	_style_box = load(Bracket.PANEL_BOX_RES)
 
 var _moving : bool
 var _connecting : bool
@@ -50,7 +66,7 @@ var _external_connecting : bool
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and _moving:
-		global_position = get_global_mouse_position() - _get_connect_button_position()
+		snap(get_global_mouse_position() - _get_connect_button_position())
 		queue_redraw()
 		for point in connections_from + external_connections_from:
 			point.queue_redraw()
@@ -70,18 +86,28 @@ func _input(event: InputEvent) -> void:
 			_disconnecting = false
 			disconnecting.emit(self)
 			%ConnectFromButton.release_focus()
+	elif event.is_action_pressed("context_select"):
+		if event is InputEventMouseButton:
+			var rect = Rect2i(get_screen_position(), size)
+			if rect.has_point(DisplayServer.mouse_get_position()):
+				context_menu.popup(Rect2i(
+					DisplayServer.mouse_get_position(),
+					Vector2i()
+				))
 
 func _draw() -> void:
-	if is_instance_valid(connection_to):
-		draw_polyline([
-			get_connect_to_position(),
-			connection_to.get_connect_from_position() - position
-		], Color.WHITE, 1.0)
+	if not is_instance_valid(bracket):
+		return
 	for point in external_connections_to.values():
 		draw_polyline([
 			get_external_connect_to_position(),
 			point.get_connect_from_position() - position
-		], Color.BLUE, 1.0)
+		], EXTERNAL_COLOR, 2.0)
+	if is_instance_valid(connection_to):
+		draw_polyline([
+			get_connect_to_position(),
+			connection_to.get_connect_from_position() - position
+		], bracket.color.lightened(0.5), 3.0)
 
 func get_dictionary() -> Dictionary:
 	var dict = {
@@ -108,8 +134,8 @@ func get_external_connect_to_position() -> Vector2:
 	return %ConnectExternalButton.size * 0.5 + %ConnectExternalButton.global_position - position
 	#return %ConnectFromButton.size * 0.5 + %ConnectFromButton.global_position - position
 
-func get_center_top() -> Vector2:
-	return Vector2(position.x + size.x * 0.5, position.y)
+func get_center() -> Vector2:
+	return position + size / 2
 
 func _get_connect_button_position() -> Vector2:
 	return %MoveButton.size * 0.5 + %MoveButton.position
@@ -205,12 +231,39 @@ func _remove_from_bracket() -> void:
 	elif not is_instance_valid(connection_to):
 		bracket = null
 
-func _break_external_connections() -> void:
+func _break_connections_from() -> void:
+	for point in connections_from:
+		point.connection_to = null
+		point.queue_redraw()
+
+func _break_external_connections_from() -> void:
 	for point in external_connections_from:
 		point.external_connections_to.erase(bracket)
 		point.queue_redraw()
+
+func _break_all_connections() -> void:
+	_break_connections_from()
+	_break_external_connections_from()
+	remove_connection()
+	for key in external_connections_to:
+		remove_external_connection(external_connections_to[key])
+	bracket = null
+	queue_redraw()
 
 func _add_to_bracket(new_bracket: Bracket) -> void:
 	bracket = new_bracket
 	for point in connections_from:
 		point._add_to_bracket(new_bracket)
+
+func snap(pos: Vector2) -> void:
+	position = _snap_to_grid(pos)
+	moving.emit(self, position)
+
+func _snap_to_grid(pos: Vector2) -> Vector2:
+	if Board.snap_to_grid:
+		var move:= Vector2i(pos)
+		return Vector2(
+			move.x - move.x % GRID_SIZE - GRID_SIZE,
+			move.y - move.y % GRID_SIZE - GRID_SIZE
+		)
+	return pos

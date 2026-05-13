@@ -1,0 +1,24 @@
+[gd_resource type="Theme" load_steps=7 format=3 uid="uid://dap7f2sy1dnhm"]
+
+[ext_resource type="StyleBox" uid="uid://cxrgxlk7v0y2b" path="res://theme/tool_box_style_box.tres" id="1_m1s3j"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ubd81"]
+bg_color = Color(0.82665616, 0.3374492, 1, 0.24313726)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kflne"]
+bg_color = Color(0.6, 0.6, 0.6, 0.13333334)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_i5sxn"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8nvka"]
+bg_color = Color(0.22352941, 0.22352941, 0.22352941, 0.44705883)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ubd81"]
+
+[resource]
+Button/styles/focus = SubResource("StyleBoxFlat_ubd81")
+Button/styles/hover = SubResource("StyleBoxFlat_kflne")
+Button/styles/normal = SubResource("StyleBoxEmpty_i5sxn")
+LineEdit/styles/focus = SubResource("StyleBoxFlat_8nvka")
+LineEdit/styles/normal = SubResource("StyleBoxEmpty_ubd81")
+PanelContainer/styles/panel = ExtResource("1_m1s3j")

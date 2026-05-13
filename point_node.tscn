@@ -1,11 +1,28 @@
-[gd_scene load_steps=2 format=3 uid="uid://btiaaqx8enhg6"]
+[gd_scene load_steps=5 format=3 uid="uid://btiaaqx8enhg6"]
 
 [ext_resource type="Script" uid="uid://bbji7qr0kcag6" path="res://point_node.gd" id="1_5x2on"]
+[ext_resource type="StyleBox" uid="uid://r6gbbqcsk06b" path="res://theme/panel_style_box.tres" id="1_8nvka"]
+[ext_resource type="Theme" uid="uid://dap7f2sy1dnhm" path="res://theme/point_node_theme.tres" id="1_kflne"]
+[ext_resource type="Script" uid="uid://cfiqjxmbwnfov" path="res://point_node_context_menu.gd" id="2_i5sxn"]
 
 [node name="PointNode" type="PanelContainer"]
+custom_minimum_size = Vector2(128, 128)
 offset_right = 113.0
-offset_bottom = 66.0
+offset_bottom = 128.0
+theme = ExtResource("1_kflne")
+theme_override_styles/panel = ExtResource("1_8nvka")
 script = ExtResource("1_5x2on")
+
+[node name="ContextMenu" type="PopupMenu" parent="."]
+oversampling_override = 1.0
+size = Vector2i(83, 62)
+item_count = 2
+item_0/text = "Remove"
+item_0/id = 0
+item_0/disabled = true
+item_1/text = "Delete"
+item_1/id = 1
+script = ExtResource("2_i5sxn")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 2
@@ -16,34 +33,37 @@ custom_minimum_size = Vector2(31, 31)
 layout_mode = 2
 size_flags_horizontal = 4
 text = "•"
-flat = true
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
 
 [node name="IndexBox" type="SpinBox" parent="VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(87, 0)
 layout_mode = 2
+size_flags_horizontal = 0
 max_value = 255.0
+alignment = 2
 
 [node name="MoveButton" type="Button" parent="VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(31, 31)
 layout_mode = 2
+size_flags_horizontal = 10
 text = "✥"
 
 [node name="BracketLabel" type="Label" parent="VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+horizontal_alignment = 1
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer"]
-layout_mode = 2
-
-[node name="ConnectToButton" type="Button" parent="VBoxContainer/HBoxContainer2"]
+[node name="ConnectToButton" type="Button" parent="VBoxContainer"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 31)
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_vertical = 10
 text = "⮟"
-flat = true
 
 [node name="ConnectExternalButton" type="Button" parent="."]
 unique_name_in_owner = true
@@ -52,9 +72,11 @@ layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 8
 text = "￭"
-flat = true
 
+[connection signal="about_to_popup" from="ContextMenu" to="ContextMenu" method="_on_about_to_popup"]
+[connection signal="index_pressed" from="ContextMenu" to="ContextMenu" method="_on_index_pressed"]
 [connection signal="button_down" from="VBoxContainer/ConnectFromButton" to="." method="_on_connect_from_button_down"]
+[connection signal="value_changed" from="VBoxContainer/HBoxContainer/IndexBox" to="." method="_on_index_box_value_changed"]
 [connection signal="button_down" from="VBoxContainer/HBoxContainer/MoveButton" to="." method="_on_move_button_button_down"]
-[connection signal="button_down" from="VBoxContainer/HBoxContainer2/ConnectToButton" to="." method="_on_connect_to_button_down"]
+[connection signal="button_down" from="VBoxContainer/ConnectToButton" to="." method="_on_connect_to_button_down"]
 [connection signal="button_down" from="ConnectExternalButton" to="." method="_on_connect_external_button_down"]

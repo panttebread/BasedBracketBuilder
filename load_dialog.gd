@@ -26,3 +26,10 @@ func _on_board_filter_text_changed(new_text: String) -> void:
 	for board in boards:
 		if board.contains(new_text) or new_text == "":
 			board_list.add_item(board)
+
+func _input(event: InputEvent) -> void:
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_LEFT and event.double_click:
+			if %BoardList.get_rect().has_point(event.position):
+				confirmed.emit()
+				hide()
