@@ -207,7 +207,8 @@ func _remove_external_connection_from(point: PointNode) -> void:
 		external_connections_from.remove_at(idx)
 
 func remove_connection() -> void:
-	connection_to._remove_connection_from.call_deferred(self)
+	if is_instance_valid(connection_to) and not connection_to.is_queued_for_deletion():
+		connection_to._remove_connection_from.call_deferred(self)
 	connection_to = null
 	_remove_from_bracket()
 	queue_redraw()

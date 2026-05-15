@@ -1,12 +1,12 @@
 [gd_scene load_steps=12 format=3 uid="uid://d3fpld333mtga"]
 
-[ext_resource type="Script" uid="uid://c0iguihwp4g51" path="res://main.gd" id="1_0xm2m"]
+[ext_resource type="Script" uid="uid://c0iguihwp4g51" path="res://scripts/main.gd" id="1_0xm2m"]
 [ext_resource type="PackedScene" uid="uid://b467ppnthr5y0" path="res://board.tscn" id="1_ig7tw"]
 [ext_resource type="PackedScene" uid="uid://3jrmqporf2hj" path="res://bracket_options.tscn" id="2_h2yge"]
 [ext_resource type="StyleBox" uid="uid://cxrgxlk7v0y2b" path="res://theme/tool_box_style_box.tres" id="3_272bh"]
-[ext_resource type="Script" uid="uid://bbkptydod6n5u" path="res://message_popup.gd" id="4_1bvp3"]
-[ext_resource type="Script" uid="uid://d3muym7ud6ux" path="res://load_dialog.gd" id="5_lquwl"]
-[ext_resource type="Script" uid="uid://dstssp0xlkohu" path="res://save_confirm_dialog.gd" id="6_7mycd"]
+[ext_resource type="Script" uid="uid://bbkptydod6n5u" path="res://scripts/message_popup.gd" id="4_1bvp3"]
+[ext_resource type="Script" uid="uid://d3muym7ud6ux" path="res://scripts/load_dialog.gd" id="5_lquwl"]
+[ext_resource type="Script" uid="uid://dstssp0xlkohu" path="res://scripts/save_confirm_dialog.gd" id="6_7mycd"]
 
 [sub_resource type="InputEventKey" id="InputEventKey_h2yge"]
 device = -1

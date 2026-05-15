@@ -1,9 +1,9 @@
 [gd_scene load_steps=5 format=3 uid="uid://btiaaqx8enhg6"]
 
-[ext_resource type="Script" uid="uid://bbji7qr0kcag6" path="res://point_node.gd" id="1_5x2on"]
+[ext_resource type="Script" uid="uid://bbji7qr0kcag6" path="res://scripts/point_node.gd" id="1_5x2on"]
 [ext_resource type="StyleBox" uid="uid://r6gbbqcsk06b" path="res://theme/panel_style_box.tres" id="1_8nvka"]
 [ext_resource type="Theme" uid="uid://dap7f2sy1dnhm" path="res://theme/point_node_theme.tres" id="1_kflne"]
-[ext_resource type="Script" uid="uid://cfiqjxmbwnfov" path="res://point_node_context_menu.gd" id="2_i5sxn"]
+[ext_resource type="Script" uid="uid://cfiqjxmbwnfov" path="res://scripts/point_node_context_menu.gd" id="2_i5sxn"]
 
 [node name="PointNode" type="PanelContainer"]
 custom_minimum_size = Vector2(128, 128)

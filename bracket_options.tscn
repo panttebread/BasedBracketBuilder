@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://3jrmqporf2hj"]
 
-[ext_resource type="Script" uid="uid://vwnwigrex2e6" path="res://bracket_options.gd" id="1_oklum"]
+[ext_resource type="Script" uid="uid://vwnwigrex2e6" path="res://scripts/bracket_options.gd" id="1_oklum"]
 
 [node name="BracketOptions" type="PanelContainer"]
 offset_right = 128.0

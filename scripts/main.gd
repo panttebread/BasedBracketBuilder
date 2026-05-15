@@ -8,6 +8,7 @@ extends Control
 ## - Brackets don't get added to board when a node with multiple connections is disconnected from
 ##   a node
 ## - Single nodes connected to a removed node get new bracket
+## - Deleting bottom node with single node connected causes single node to get new bracket
 
 
 # Called when the node enters the scene tree for the first time.
