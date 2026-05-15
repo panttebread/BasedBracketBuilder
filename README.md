@@ -76,4 +76,4 @@ The file is a nested dictionary with this hierarchy:
 
 - Each Bracket is a dictionary of rounds labelled 0 - n
 - Each Round is an array of Point dictionaries
-- Each Point contains information on what index it is inside a Bracket and the index of points in other Brackets that it connects to
+- Each Point contains its index in a Bracket and the index of points in other Brackets that it connects to
