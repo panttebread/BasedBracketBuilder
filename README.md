@@ -16,7 +16,7 @@ Click and drag from the **dot connector at the top** of a point to remove connec
 ## Removing Points
 You can **right-click on a point to delete it or remove it** from a bracket.
 
-Note: removing points doesn't work correctly
+Note: removing points doesn't work correctly, yet
 
 ## Brackets
 When you make a bracket by joining 2 or more points, it'll appear in the "Bracket" list in the Tool Box on the left of the screen. The list automatically updates as you make and dismantle brackets. You can **rename a bracket by right-clicking it in the list**
