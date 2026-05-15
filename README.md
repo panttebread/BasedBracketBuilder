@@ -13,6 +13,9 @@ The **square connector in the bottom right** corner can be used to connect to an
 
 Click and drag from the **dot connector at the top** of a point to remove connections to that point. You can either drag to a point it's connected to to remove the connection, or drag to an empty space to remove all connections.
 
+## Brackets
+When you make a bracket by joining 2 or more points, it'll appear in the "Bracket" list in the Tool Box on the left of the screen. The list automatically updates as you make and dismantle brackets. You can **rename a bracket by right-clicking it in the list**
+
 ## Saving/Loading
 When you want to save, give the board a **name in the top of the Tool Box** on the left of the screen, then press the "**Save**" button. Your boards are saved to your User folder. The "**Open Folder**" button will open your User folder in your OS's file manager.
 
